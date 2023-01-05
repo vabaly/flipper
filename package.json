@@ -8,10 +8,19 @@
     "typecheck": "tsc -b"
   },
   "dependencies": {
+    "@phala/sdk": "^0.3.5-beta.10",
+    "@phala/typedefs": "^0.2.33",
+    "@polkadot/api": "^9.10.5",
+    "@polkadot/api-contract": "^9.10.5",
+    "@polkadot/extension-inject": "^0.44.7",
+    "@polkadot/types": "^9.10.5",
     "@remix-run/node": "^1.9.0",
     "@remix-run/react": "^1.9.0",
     "@remix-run/serve": "^1.9.0",
+    "baseui": "^12.2.0",
     "isbot": "^3.6.5",
+    "jotai": "^1.12.1",
+    "jotai-optics": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
