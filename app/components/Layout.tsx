@@ -4,11 +4,12 @@ import { HeadingXLarge } from 'baseui/typography'
 import { ToasterContainer } from 'baseui/toast'
 import { Block } from 'baseui/block'
 import { ChevronLeft } from 'baseui/icon'
-// import AccountSelect from './AccountSelect'
-// import useIsClient from '../hooks/useIsClient'
+import AccountSelect from './AccountSelect'
+import useIsClient from '../hooks/useIsClient'
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const matches = useMatches()
+  const isClient = useIsClient()
 
   const lastMatch = matches[matches.length - 1]
   const title = lastMatch?.handle?.title || 'Phala SDK Example'
@@ -38,6 +39,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             </Link>
           )}
           <HeadingXLarge as="div">{title}</HeadingXLarge>
+          {isClient && <AccountSelect></AccountSelect>}
         </Block>
       </Block>
 
