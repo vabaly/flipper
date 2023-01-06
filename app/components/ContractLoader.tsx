@@ -17,6 +17,7 @@ import { atomWithStorage } from 'jotai/utils'
 import { create } from '@phala/sdk'
 
 import { createApi } from '../lib/polkadotApi'
+import useIsClient from '../hooks/useIsClient'
 
 const defaultEndpoint = 'ws://localhost:9944'
 const defaultPruntimeURL = 'http://localhost:8000'
@@ -73,6 +74,9 @@ const ContractLoader: FC<{
   const [contractInfo, setContractInfo] = useAtom(contractInfoAtom.current)
 
   const {contractId = '', metadata = ''} = contractInfo || {}
+
+  const isClient = useIsClient()
+  if (!isClient) return null
 
   // 点击提交按钮时会创建到链上的连接，并且生成合约交互实例
   const loadContract = async () => {

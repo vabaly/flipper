@@ -7,10 +7,16 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
+import { Provider as StyletronProvider } from 'styletron-react'
+import { LightTheme, BaseProvider } from 'baseui'
+
+import { styletron } from './config/styletron'
+import Layout from './components/Layout'
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
-  title: 'New Remix App',
+  title: 'Phala SDK Example',
+  description: 'Phala SDK Example',
   viewport: 'width=device-width,initial-scale=1',
 })
 
@@ -22,7 +28,13 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <StyletronProvider value={styletron}>
+          <BaseProvider theme={LightTheme}>
+            <Layout>
+              <Outlet />
+            </Layout>
+          </BaseProvider>
+        </StyletronProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

@@ -12,6 +12,7 @@
     "@phala/typedefs": "^0.2.33",
     "@polkadot/api": "^9.10.5",
     "@polkadot/api-contract": "^9.10.5",
+    "@polkadot/extension-dapp": "^0.44.7",
     "@polkadot/extension-inject": "^0.44.7",
     "@polkadot/types": "^9.10.5",
     "@remix-run/node": "^1.9.0",
@@ -22,7 +23,9 @@
     "jotai": "^1.12.1",
     "jotai-optics": "^0.2.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styletron-engine-monolithic": "^1.0.0",
+    "styletron-react": "^6.1.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.9.0",

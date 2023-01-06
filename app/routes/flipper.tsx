@@ -1,3 +1,4 @@
+import type { MetaFunction } from '@remix-run/node'
 import { useState, useEffect } from 'react'
 import { useAtom } from 'jotai'
 import { Button } from 'baseui/button'
@@ -5,10 +6,25 @@ import { ButtonGroup } from 'baseui/button-group'
 import { toaster } from 'baseui/toast'
 import type { ApiPromise } from '@polkadot/api'
 import type { ContractPromise } from '@polkadot/api-contract'
-import { CertificateData } from '@phala/sdk'
+import { signCertificate } from '@phala/sdk'
+import type { CertificateData } from '@phala/sdk'
 
 import ContractLoader from '../components/ContractLoader'
 import accountAtom from '../atoms/account'
+import { getSigner } from '../lib/polkadotExtension'
+
+const PAGE_TITLE = 'Flipper'
+const PAGE_TITLE_DESCRIBE = {
+  title: PAGE_TITLE,
+}
+
+export const meta: MetaFunction = () => ({
+  ...PAGE_TITLE_DESCRIBE,
+})
+
+export const handle = {
+  ...PAGE_TITLE_DESCRIBE,
+}
 
 const Flipper = () => {
   // 与链的服务器连接的 API
@@ -54,6 +70,44 @@ const Flipper = () => {
         toaster.negative((err as Error).message, {})
       }
     }
+  }
+
+  // TODO: 根据认证信息获取什么东西
+  const onQuery = async () => {
+    if (!certificateData || !contract) return
+    const {output} = await contract.query.get(certificateData as any, {})
+    console.log(output?.toHuman())
+    toaster.info(JSON.stringify(output?.toHuman()), {})
+  }
+
+  const onCommand = async () => {
+    if (!contract || !account || !certificateData) return
+    const signer = await getSigner(account)
+
+    const {gasRequired, storageDeposit} = await contract.query.flip(
+      certificateData as any,
+      {}
+    )
+
+    const options = {
+      // value: 0,
+      gasLimit: (gasRequired as any).refTime,
+      storageDepositLimit: storageDeposit.isCharge
+        ? storageDeposit.asCharge
+        : null,
+    }
+
+    contract.tx
+      .flip(options)
+      .signAndSend(account.address, {signer}, (status) => {
+        console.log('status', status)
+        if (status.isInBlock) {
+          toaster.positive('In Block', {})
+        }
+        if (status.isCompleted) {
+          toaster.positive('Completed', {})
+        }
+      })
   }
 
   return contract ? (
